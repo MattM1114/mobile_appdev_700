@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,9 +27,16 @@ public class RecipeListActivity extends AppCompatActivity {
 
         rvRecipes = findViewById(R.id.rvRecipes);
         tvEmptyRecipes = findViewById(R.id.tvEmptyRecipes);
+        Button btnAddRecipe = findViewById(R.id.btnAddRecipe);
         dbHelper = new PantryDatabaseHelper(this);
 
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
+
+        // Wire up the button to open AddRecipeActivity
+        btnAddRecipe.setOnClickListener(v -> {
+            Intent intent = new Intent(RecipeListActivity.this, AddRecipeActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -38,7 +46,6 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void loadRecipes() {
-        // Fetches recipes that can be made with current pantry items
         List<Recipe> recipes = dbHelper.getSuggestedRecipes();
 
         if (recipes.isEmpty()) {
